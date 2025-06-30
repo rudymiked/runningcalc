@@ -1,63 +1,48 @@
-from flask import Flask, render_template, request
+import json
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from generate_lookup_table import generate_lookup_table  # Import the function
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    # Generate marathon time options (5-minute increments from 2:00 to 6:00)
-    marathon_times = [f"{hour}:{minute:02d}" for hour in range(2, 7) for minute in range(0, 60, 5)]
-    
-    # Options for days per week
+@app.route("/api/data", methods=["GET"])
+def get_data():
+    # Example data
+    marathon_times = [f"{hour}:{minute:02d}" for hour in range(2, 6) for minute in range(0, 60, 5)]
     days_per_week = [i for i in range(3, 8)]
-    
-    # Options for average mileage
     average_mileage = [i for i in range(25, 105, 5)]
-    
-    # Options for maximum mileage
     maximum_mileage = [i for i in range(25, 125, 5)]
-    
-    # Options for number of weeks
     weeks = [i for i in range(16, 21)]
+
+    return jsonify({
+        "marathon_times": marathon_times,
+        "days_per_week": days_per_week,
+        "average_mileage": average_mileage,
+        "maximum_mileage": maximum_mileage,
+        "weeks": weeks
+    })
+
+@app.route("/api/paces", methods=["POST"])
+def get_lookup_table():
+    # Get the marathon time from the request body
+    data = request.get_json()
+    marathon_time = data.get("marathon_time")
+
+    if not marathon_time:
+        return jsonify({"error": "Marathon time is required"}), 400
     
-    # Initialize table data
-    table_data = None
+    print(f"Received marathon_time: {marathon_time}")  # Debugging log
 
-    if request.method == "POST":
-        # Get the selected number of weeks from the form
-        selected_weeks = int(request.form.get("weeks", 0))
-        
-        # Generate table data based on the number of weeks
-        table_data = [
-            {
-                "week": f"Week {i + 1}",
-                "monday": "Rest",
-                "tuesday": "Run",
-                "wednesday": "Cross-train",
-                "thursday": "Run",
-                "friday": "Rest",
-                "saturday": "Long Run",
-                "sunday": "Recovery Run"
-            }
-            for i in range(selected_weeks)
-        ]
-    
-    return render_template(
-        "home.html",
-        marathon_times=marathon_times,
-        days_per_week=days_per_week,
-        average_mileage=average_mileage,
-        maximum_mileage=maximum_mileage,
-        weeks=weeks,
-        table_data=table_data
-    )
+    # Generate the lookup table using the provided marathon time
+    lookup_table = generate_lookup_table(marathon_time)
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
+    print(f"Generated lookup table: {lookup_table}")  # Debugging log
 
-@app.route("/calculators")
-def calculators():
-    return render_template("calculators.html")
+    # Serialize the OrderedDict to JSON with sort_keys=False to preserve order
+    response = json.loads(json.dumps(lookup_table, sort_keys=False))
+
+    return jsonify(response)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,13 @@
+{
+    "marathon_time": "3:00",
+    "paces": {
+        "Recovery": 8.64,
+        "Easy": 8.19,
+        "Medium": 7.79,
+        "Mile": 5.47,
+        "5k": 6.03,
+        "10k": 6.29,
+        "HMP": 6.58,
+        "Marathon": 6.89
+    }
+}
