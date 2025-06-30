@@ -25,3 +25,48 @@
     padding: 5px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* Adds spacing between form elements */
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+form select {
+    width: 200px; /* Set a consistent width for dropdowns */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form br {
+    display: none; /* Remove unnecessary line breaks */
+}
+
+.form-and-table-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
+    gap: 20px; /* Adds spacing between form and table */
+}
+
+.form-container {
+    flex: 1; /* Form takes up available space */
+    min-width: 300px; /* Ensures the form has a minimum width */
+}
+
+.table-container {
+    flex: 1; /* Table takes up available space */
+    min-width: 300px; /* Ensures the table has a minimum width */
+}
+
+@media (max-width: 768px) {
+    .form-and-table-container {
+        flex-direction: column; /* Stack form and table vertically on smaller screens */
+    }
+}

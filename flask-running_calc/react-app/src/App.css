@@ -1,0 +1,97 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.App {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Form takes 1/3, table takes 2/3 */
+  gap: 20px;
+  align-items: start; /* Aligns the form and table at the top */
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Adds spacing between form elements */
+  min-width: 300px;
+}
+
+.form-container label {
+  font-weight: bold;
+  text-align: left; /* Ensures labels are left-aligned */
+  display: block; /* Ensures labels are on their own line */
+}
+
+.form-container select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%; /* Ensures dropdowns take full width */
+}
+
+.form-container button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background-color: #0056b3;
+}
+
+.table-container {
+  min-width: 300px;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Stack form and table vertically */
+  }
+}
