@@ -107,8 +107,8 @@ const speedWorkouts = [
   { desc: "10x400m @ mile pace (~4 miles w/ jogs)", mileage: 4 },
   { desc: "10x600m @ 5K pace (~5 miles w/ jogs)", mileage: 5 },
   { desc: "8x800m @ 5K pace (~6 miles w/ jogs)", mileage: 6 },
-  { desc: "6x1 mile @ 10K pace (~7 miles w/ jogs)", mileage: 7 },
-  { desc: "4x2 miles @ HM pace (~9 miles w/ jogs)", mileage: 9 },
+  { desc: "5x1 mile @ 10K pace (~7 miles w/ jogs)", mileage: 6 },
+  //{ desc: "4x2 miles @ HM pace (~9 miles w/ jogs)", mileage: 9 },
 ];
 
 export const generateTableData = (
@@ -123,7 +123,7 @@ export const generateTableData = (
   let totalPlannedMileage = 0;
 
   // Precompute which weeks will be max mileage (last 2 before taper)
-  const maxWeeks = [taperStartWeek - 2, taperStartWeek - 1];
+  const maxWeeks = [taperStartWeek - 4, taperStartWeek - 3];
 
   const tableData = Array.from({ length: weeks }, (_, weekIndex) => {
     let weeklyMileage: number;
@@ -216,15 +216,15 @@ export const generateTableData = (
       (day) => weekPlan[day] === "Run"
     );
 
-    // Ensure every running day gets at least 1 mile if possible
+    // Ensure every running day gets at least 3 miles if possible
     let baseMileage = 0;
     let leftover = 0;
     if (otherRunningDays.length > 0) {
-      // Give 1 mile to each first, then distribute the rest
-      const minMiles = otherRunningDays.length;
+      // Give 3 miles to each first, then distribute the rest
+      const minMiles = otherRunningDays.length * 3;
       let distributable = Math.max(0, remainingMileage - minMiles);
-      baseMileage = Math.floor(distributable / otherRunningDays.length) + 1;
-      leftover = distributable - (baseMileage - 1) * otherRunningDays.length;
+      baseMileage = Math.floor(distributable / otherRunningDays.length) + 3;
+      leftover = distributable - (baseMileage - 3) * otherRunningDays.length;
     }
 
     otherRunningDays.forEach((day) => {
