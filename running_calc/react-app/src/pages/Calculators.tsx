@@ -15,9 +15,6 @@ const Calculators = () => {
     const formatTime = (time: { hours: number; minutes: number; seconds: number }) =>
       `${time.hours}:${time.minutes.toString().padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`;
 
-    console.log(useFiveK);
-    console.log(fiveKTime);
-
     setPredictedMarathonTime(
       predictMarathonTime(
         useHalfMarathon ? formatTime(halfMarathonTime) : "",

@@ -230,7 +230,7 @@ const MarathonBlock = () => {
                     <TableRow sx={{ borderBottom: "3px solid black" }}>
                       <TableCell>Pace (min/mile)</TableCell>
                       <TableCell>{paces?.Recovery ? `${decimalPaceToString(paces.Recovery)}` : "N/A"}</TableCell>
-                      <TableCell>{paces?.Mile ? `${decimalPaceToString(paces.Mile)}` : "N/A"}</TableCell>
+                      <TableCell>{paces?.Mile ? `Track` : "N/A"}</TableCell>
                       <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
                       <TableCell>{paces?.Marathon ? `${decimalPaceToString(paces.Marathon)}` : "N/A"}</TableCell>
                       <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
