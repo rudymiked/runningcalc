@@ -8,6 +8,7 @@ export interface ITrainingPlan {
   saturday: string;
   sunday: string;
   total_miles?: number;
+  average_miles?: number;
 }
 
 export interface IPaceData {
@@ -106,9 +107,11 @@ export const generateTableData = (
   maximumMileage: number,
   weeks: number,
   daysPerWeek: number
-): ITrainingPlan[] => {
+): { tableData: ITrainingPlan[]; calculatedAverage: number } => {
   const restDaysOrder = ["friday", "monday", "wednesday", "saturday"];
   const taperStartWeek = weeks - 3; // Start tapering 3 weeks before the end
+  const totalTargetMileage = averageMileage * weeks; // Total mileage to match the average
+  let totalPlannedMileage = 0; // Track total planned mileage
 
   const tableData = Array.from({ length: weeks }, (_, weekIndex) => {
     // Calculate weekly mileage
@@ -141,6 +144,16 @@ export const generateTableData = (
     // Ensure weekly mileage doesn't exceed the maximum mileage
     weeklyMileage = Math.min(weeklyMileage, maximumMileage);
 
+    // Adjust weekly mileage to ensure total mileage matches the target
+    const remainingWeeks = weeks - weekIndex;
+    const remainingTargetMileage = totalTargetMileage - totalPlannedMileage;
+    const adjustedWeeklyMileage = Math.min(
+      weeklyMileage,
+      Math.floor(remainingTargetMileage / remainingWeeks)
+    );
+    weeklyMileage = adjustedWeeklyMileage;
+    totalPlannedMileage += weeklyMileage;
+
     const restDays = restDaysOrder.slice(0, 7 - daysPerWeek);
     const weekPlan: Record<string, string> = {
       monday: "Run",
@@ -157,44 +170,71 @@ export const generateTableData = (
       weekPlan[day] = "Rest";
     });
 
-    // Special case for the final week: No running on Saturday or Sunday
+    // Special case for the final week: No running on Saturday or Sunday, and no day over 5 miles
     if (weekIndex === weeks - 1) {
-      weekPlan.saturday = "Shakeout";
-      weekPlan.sunday = "RACE";
-    }
+      weekPlan.saturday = "Rest";
+      weekPlan.sunday = "Rest";
 
-    // Distribute mileage across the week
-    let remainingMileage = weeklyMileage;
+      // Distribute mileage across the remaining days, ensuring no day exceeds 5 miles
+      const maxDailyMileage = 5;
+      let remainingMileage = weeklyMileage;
+      const runningDays = Object.keys(weekPlan).filter(
+        (day) => weekPlan[day] === "Run"
+      );
 
-    // Assign long run to Sunday (if not the final week)
-    if (weekIndex !== weeks - 1) {
+      runningDays.forEach((day, index) => {
+        if (index === runningDays.length - 1) {
+          // Assign all remaining mileage to the last running day
+          weekPlan[day] = `${Math.min(remainingMileage, maxDailyMileage)} miles`;
+        } else {
+          const dailyMileage = Math.min(
+            Math.floor(remainingMileage / runningDays.length),
+            maxDailyMileage
+          );
+          weekPlan[day] = `${dailyMileage} miles`;
+          remainingMileage -= dailyMileage;
+        }
+      });
+    } else {
+      // Distribute mileage across the week for other weeks
+      let remainingMileage = weeklyMileage;
+
+      // Assign long run to Sunday (if not the final week)
       const longRunMileage = Math.ceil(weeklyMileage * 0.4); // 40% of weekly mileage
       weekPlan.sunday = `${longRunMileage}`;
       remainingMileage -= longRunMileage;
-    }
 
-    // Assign short run to Monday
-    const shortRunMileage = Math.ceil(weeklyMileage * 0.2); // 20% of weekly mileage
-    if (weekPlan.monday === "Run") {
-      weekPlan.monday = `${shortRunMileage}`;
-      remainingMileage -= shortRunMileage;
-    }
-
-    // Distribute remaining mileage across other running days
-    const otherRunningDays = Object.keys(weekPlan).filter(
-      (day) => weekPlan[day] === "Run"
-    );
-    const remainingDailyMileage = Math.floor(remainingMileage / otherRunningDays.length);
-
-    otherRunningDays.forEach((day, index) => {
-      if (index === otherRunningDays.length - 1) {
-        // Assign all remaining mileage to the last day
-        weekPlan[day] = `${remainingMileage}`;
-      } else {
-        weekPlan[day] = `${remainingDailyMileage}`;
-        remainingMileage -= remainingDailyMileage;
+      // Assign short run to Monday
+      let shortRunMileage = Math.ceil(4);
+      if (weekPlan.monday === "Run") {
+        weekPlan.monday = `${shortRunMileage}`;
+        remainingMileage -= shortRunMileage;
       }
-    });
+
+      shortRunMileage = Math.ceil(3);
+      if (weekPlan.saturday === "Run") {
+        weekPlan.saturday = `${shortRunMileage}`;
+        remainingMileage -= shortRunMileage;
+      }
+
+      // Distribute remaining mileage across other running days
+      const otherRunningDays = Object.keys(weekPlan).filter(
+        (day) => weekPlan[day] === "Run"
+      );
+      const remainingDailyMileage = Math.floor(
+        remainingMileage / otherRunningDays.length
+      );
+
+      otherRunningDays.forEach((day, index) => {
+        if (index === otherRunningDays.length - 1) {
+          // Assign all remaining mileage to the last day
+          weekPlan[day] = `${remainingMileage}`;
+        } else {
+          weekPlan[day] = `${remainingDailyMileage}`;
+          remainingMileage -= remainingDailyMileage;
+        }
+      });
+    }
 
     return {
       week: `Week ${weekIndex + 1}`,
@@ -209,5 +249,9 @@ export const generateTableData = (
     };
   });
 
-  return tableData;
+  // Calculate the average mileage
+  const calculatedAverage =
+    tableData.reduce((sum, week) => sum + (week.total_miles || 0), 0) / weeks;
+
+  return { tableData, calculatedAverage };
 };

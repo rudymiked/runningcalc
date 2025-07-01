@@ -32,6 +32,7 @@ const MarathonBlock = () => {
   const [maximumMileage, setMaximumMileage] = useState<number>(40);
   const [paces, setPaces] = useState<IPaceData>();
   const [totalMiles, setTotalMiles] = useState<number>(0);
+  const [calculatedAverageMileage, setCalculatedAverageMileage] = useState<number>(0);
 
   const [data, setData] = useState<IStaticData>({
     marathon_times: [],
@@ -50,7 +51,9 @@ const MarathonBlock = () => {
 
     setTotalMiles(averageMileage * weeks);
 
-    setTableData(generateTableData(averageMileage, maximumMileage, weeks, daysPerWeek));
+    const generatedTableData = generateTableData(averageMileage, maximumMileage, weeks, daysPerWeek)
+    setTableData(generatedTableData.tableData);
+    setCalculatedAverageMileage(parseFloat(generatedTableData.calculatedAverage.toFixed(0)));
   };
 
   return (
@@ -220,7 +223,7 @@ const MarathonBlock = () => {
                       <TableCell>Friday</TableCell>
                       <TableCell>Saturday</TableCell>
                       <TableCell>Sunday</TableCell>
-                      <TableCell>Total Miles</TableCell>
+                      <TableCell>Total (Avg)</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -234,7 +237,7 @@ const MarathonBlock = () => {
                       <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
                       <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
                       <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
-                      <TableCell>{totalMiles}</TableCell>
+                      <TableCell>{totalMiles} ({calculatedAverageMileage})</TableCell>
                     </TableRow>
                     {/* Training Plan Rows */}
                     {tableData.map((row, index) => (
