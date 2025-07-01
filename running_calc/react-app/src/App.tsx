@@ -6,8 +6,8 @@ import MarathonBlock from "./pages/MarathonBlock";
 import Calculators from "./pages/Calculators";
 import About from "./pages/About";
 
-export const dropDownStyle = { minWidth:"150px", maxWidth:"100%" };
-export const textAreaStyle = { minWidth:"200px", maxWidth:"100%" };
+export const dropDownStyle = { minWidth:"150px" };
+export const textAreaStyle = { minWidth:"200px"};
 
 const App = () => {
   const [value, setValue] = React.useState(0);
