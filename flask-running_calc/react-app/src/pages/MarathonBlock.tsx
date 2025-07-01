@@ -17,7 +17,7 @@ import {
   Grid,
   Stack,
 } from "@mui/material";
-import { generatePaces, generateTableData, type IPaceData, type ITrainingPlan } from "../utils/generatePaces"; // Import the utility function
+import { generatePaces, generateTableData, type IPaceData, type ITrainingPlan } from "../utils/generateBlockData"; // Import the utility function
 import { staticData, type IStaticData } from "../utils/staticData";
 import { decimalPaceToString } from "../utils/utils";
 

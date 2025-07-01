@@ -108,11 +108,39 @@ export const generateTableData = (
   daysPerWeek: number
 ): ITrainingPlan[] => {
   const restDaysOrder = ["friday", "monday", "wednesday", "saturday"];
-  const totalMileage = averageMileage * weeks;
-  const weeklyMileage = Math.min(averageMileage, maximumMileage);
-  const dailyMileage = Math.floor(weeklyMileage / daysPerWeek);
+  const taperStartWeek = weeks - 3; // Start tapering 3 weeks before the end
 
   const tableData = Array.from({ length: weeks }, (_, weekIndex) => {
+    // Calculate weekly mileage
+    let weeklyMileage: number;
+    if (weekIndex === 0) {
+      // First week: Half the maximum mileage
+      weeklyMileage = Math.floor(maximumMileage / 2);
+    } else if (weekIndex < taperStartWeek) {
+      // Build-up phase: Start from week 1 mileage and increase progressively
+      const week1Mileage = Math.floor(maximumMileage / 2);
+      const increment = (maximumMileage - week1Mileage) / (taperStartWeek - 1);
+      weeklyMileage = Math.min(
+        maximumMileage,
+        Math.floor(week1Mileage + increment * weekIndex)
+      );
+    } else {
+      // Taper phase: Gradually reduce mileage
+      if (weekIndex === weeks - 1) {
+        // Final week: 1/3 of the maximum mileage
+        weeklyMileage = Math.floor(maximumMileage / 3);
+      } else if (weekIndex === weeks - 2) {
+        // Second-to-last week: 2/3 of the maximum mileage
+        weeklyMileage = Math.floor((maximumMileage * 2) / 3);
+      } else {
+        // Third-to-last week: 3/4 of the maximum mileage
+        weeklyMileage = Math.floor(maximumMileage * 0.75);
+      }
+    }
+
+    // Ensure weekly mileage doesn't exceed the maximum mileage
+    weeklyMileage = Math.min(weeklyMileage, maximumMileage);
+
     const restDays = restDaysOrder.slice(0, 7 - daysPerWeek);
     const weekPlan: Record<string, string> = {
       monday: "Run",
@@ -129,13 +157,21 @@ export const generateTableData = (
       weekPlan[day] = "Rest";
     });
 
+    // Special case for the final week: No running on Saturday or Sunday
+    if (weekIndex === weeks - 1) {
+      weekPlan.saturday = "Shakeout";
+      weekPlan.sunday = "RACE";
+    }
+
     // Distribute mileage across the week
     let remainingMileage = weeklyMileage;
 
-    // Assign long run to Sunday
-    const longRunMileage = Math.ceil(weeklyMileage * 0.4); // 40% of weekly mileage
-    weekPlan.sunday = `${longRunMileage}`;
-    remainingMileage -= longRunMileage;
+    // Assign long run to Sunday (if not the final week)
+    if (weekIndex !== weeks - 1) {
+      const longRunMileage = Math.ceil(weeklyMileage * 0.4); // 40% of weekly mileage
+      weekPlan.sunday = `${longRunMileage}`;
+      remainingMileage -= longRunMileage;
+    }
 
     // Assign short run to Monday
     const shortRunMileage = Math.ceil(weeklyMileage * 0.2); // 20% of weekly mileage
