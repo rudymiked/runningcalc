@@ -20,8 +20,7 @@ import {
 import { generatePaces, generateTableData, type IPaceData, type ITrainingPlan } from "../utils/generateBlockData"; // Import the utility function
 import { staticData, type IStaticData } from "../utils/staticData";
 import { decimalPaceToString } from "../utils/utils";
-
-const dropDownStyle = { minWidth:"200px", maxWidth:"100%" };
+import { dropDownStyle } from "../App";
 
 const MarathonBlock = () => {
   const [tableData, setTableData] = useState<ITrainingPlan[]>([]);

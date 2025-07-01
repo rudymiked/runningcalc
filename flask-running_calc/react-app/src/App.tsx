@@ -6,6 +6,9 @@ import MarathonBlock from "./pages/MarathonBlock";
 import Calculators from "./pages/Calculators";
 import About from "./pages/About";
 
+export const dropDownStyle = { minWidth:"200px", maxWidth:"100%" };
+export const textAreaStyle = { minWidth:"200px", maxWidth:"100%" };
+
 const App = () => {
   const [value, setValue] = React.useState(0);
 
@@ -35,7 +38,7 @@ const App = () => {
       {/* Content Section */}
       <Box sx={{ paddingTop: 8, padding: 2 }}>
         <Routes>
-          <Route path="/" element={<MarathonBlock />} />
+          <Route path="/" element={<Calculators />} />
           <Route path="/marathonblock" element={<MarathonBlock />} />
           <Route path="/calculators" element={<Calculators />} />
           <Route path="/about" element={<About />} />
