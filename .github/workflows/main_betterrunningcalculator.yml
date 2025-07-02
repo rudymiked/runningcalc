@@ -56,12 +56,6 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
-      - name: Move build files to root
-        run: |
-          shopt -s dotglob
-          mv dist/* .
-          rm -rf dist
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
