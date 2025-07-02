@@ -65,5 +65,3 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_142E3018C27F4205823E5E8AAF61A97E }}
-      - run: ls -l
-        working-directory: ./running_calc/react-app
