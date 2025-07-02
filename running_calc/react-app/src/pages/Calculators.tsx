@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
+import { Box, Stack, Tab, Tabs } from "@mui/material";
 import { MarathonTimePrediction } from "../Calculators/MarathonTimePredictor";
 import { PaceGenerator } from "../Calculators/PaceGenerator";
 import { type SyntheticEvent, useState } from "react";

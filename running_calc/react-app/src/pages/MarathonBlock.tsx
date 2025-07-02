@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { generatePaces, generateTableData, type IPaceData, type ITrainingPlan } from "../utils/generateBlockData"; // Import the utility function
 import { staticData, type IStaticData } from "../utils/staticData";
-import { decimalPaceToString } from "../utils/utils";
+import { decimalPaceToString, removeLeadingZerosAndColons } from "../utils/utils";
 import { dropDownStyle } from "../App";
 
 const MarathonBlock = () => {
@@ -137,11 +137,13 @@ const MarathonBlock = () => {
                       onChange={(e) => setMaximumMileage(Number(e.target.value))}
                       label="Maximum Mileage"
                     >
-                      {data.maximum_mileage.map((mileage) => (
-                        <MenuItem key={mileage} value={mileage}>
+                        {data.maximum_mileage
+                        .filter((mileage) => mileage >= averageMileage)
+                        .map((mileage) => (
+                          <MenuItem key={mileage} value={mileage}>
                           {mileage} miles
-                        </MenuItem>
-                      ))}
+                          </MenuItem>
+                        ))}
                     </Select>
                   </FormControl>
                 </Box>
@@ -192,7 +194,7 @@ const MarathonBlock = () => {
                   <ul>
                     {Object.entries(paces).map(([paceType, paceValue]) => (
                       <li key={paceType} style={{ listStyleType: "none", textAlign: "justify" }}>
-                        <b>{paceType}</b>: {decimalPaceToString(paceValue)}
+                        <b>{paceType}</b>: {decimalPaceToString(paceValue.pace)} ({removeLeadingZerosAndColons(paceValue.time)})
                       </li>
                     ))}
                   </ul>
@@ -229,13 +231,13 @@ const MarathonBlock = () => {
                     {/* New Row for Paces */}
                     <TableRow sx={{ borderBottom: "3px solid black" }}>
                       <TableCell>Pace (min/mile)</TableCell>
-                      <TableCell>{paces?.Recovery ? `${decimalPaceToString(paces.Recovery)}` : "N/A"}</TableCell>
+                      <TableCell>{paces?.Recovery ? `${decimalPaceToString(paces.Recovery.pace)}` : "N/A"}</TableCell>
                       <TableCell>{paces?.Mile ? `Track` : "N/A"}</TableCell>
-                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
-                      <TableCell>{paces?.Marathon ? `${decimalPaceToString(paces.Marathon)}` : "N/A"}</TableCell>
-                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
-                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
-                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy)}` : "N/A"}</TableCell>
+                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy.pace)}` : "N/A"}</TableCell>
+                      <TableCell>{paces?.Marathon ? `${decimalPaceToString(paces.Marathon.pace)}` : "N/A"}</TableCell>
+                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy.pace)}` : "N/A"}</TableCell>
+                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy.pace)}` : "N/A"}</TableCell>
+                      <TableCell>{paces?.Easy ? `${decimalPaceToString(paces.Easy.pace)}` : "N/A"}</TableCell>
                       <TableCell>{totalMiles} ({calculatedAverageMileage})</TableCell>
                     </TableRow>
                     {/* Training Plan Rows */}

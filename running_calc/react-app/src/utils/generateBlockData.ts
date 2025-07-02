@@ -11,15 +11,20 @@ export interface ITrainingPlan {
   average_miles?: number;
 }
 
+export interface IPaceAndTime {
+  pace: number;
+  time: string;
+}
+
 export interface IPaceData {
-  Recovery: number;
-  Easy: number;
-  Medium: number;
-  Mile: number;
-  "5k": number;
-  "10k": number;
-  Half: number;
-  Marathon: number;
+  Recovery: IPaceAndTime;
+  Easy: IPaceAndTime;
+  Medium: IPaceAndTime;
+  Mile: IPaceAndTime;
+  fiveK: IPaceAndTime;
+  tenK: IPaceAndTime;
+  Half: IPaceAndTime;
+  Marathon: IPaceAndTime;
 };
 
 type Paces = Record<string, number[]>;
@@ -30,10 +35,21 @@ const originalPaces: Paces = {
   Easy: [7.25, 7.5, 8.0, 8.33, 8.7],
   Medium: [6.5, 7.0, 7.5, 8.0, 8.33],
   Mile: [5.13, 5.33, 5.42, 5.5, 5.7],
-  "5k": [5.5, 5.7, 5.9, 6.13, 6.38],
-  "10k": [5.83, 5.95, 6.15, 6.4, 6.65],
+  fiveK: [5.5, 5.7, 5.9, 6.13, 6.38],
+  tenK: [5.83, 5.95, 6.15, 6.4, 6.65],
   Half: [5.92, 6.22, 6.43, 6.7, 6.95],
   Marathon: [6.28, 6.5, 6.75, 7.0, 7.25],
+};
+
+const totalTimeForDistance = (pace: number, miles: number): string => {
+  if (!pace || isNaN(pace)) return "0:00:00";
+  const totalMinutes = pace * miles;
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = Math.floor(totalMinutes % 60);
+  const seconds = Math.round((totalMinutes - Math.floor(totalMinutes)) * 60);
+  return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
 };
 
 // Convert time string to minutes
@@ -51,18 +67,8 @@ const calculatePaces = (
   const marathonMinutes = timeToMinutes(marathonTime);
   const originalMinutes = originalTimes.map(timeToMinutes);
 
-  const calculatedPaces: IPaceData = {
-    Recovery: 0,
-    Easy: 0,
-    Medium: 0,
-    Mile: 0,
-    "5k": 0,
-    "10k": 0,
-    Half: 0,
-    Marathon: 0,
-  };
-
-  for (const [paceType, row] of Object.entries(originalPaces)) {
+  // Helper to interpolate pace
+  const interpolatePace = (row: number[]): number => {
     let interpolatedValue = 0;
     for (let i = 0; i < originalMinutes.length - 1; i++) {
       if (
@@ -75,24 +81,64 @@ const calculatePaces = (
         const p2 = row[i + 1];
         const adjustmentFactor = (marathonMinutes - t1) / (t2 - t1);
         interpolatedValue = p1 + (p2 - p1) * adjustmentFactor;
-        calculatedPaces[paceType as keyof IPaceData] = parseFloat(interpolatedValue.toFixed(2));
-        break;
+        return parseFloat(interpolatedValue.toFixed(2));
       }
     }
-
     if (marathonMinutes < originalMinutes[0]) {
-      calculatedPaces[paceType as keyof IPaceData] = parseFloat(
-        (row[0] * (marathonMinutes / originalMinutes[0])).toFixed(2)
-      );
+      return parseFloat((row[0] * (marathonMinutes / originalMinutes[0])).toFixed(2));
     } else if (marathonMinutes > originalMinutes[originalMinutes.length - 1]) {
-      calculatedPaces[paceType as keyof IPaceData] = parseFloat(
+      return parseFloat(
         (row[row.length - 1] *
           (marathonMinutes / originalMinutes[originalMinutes.length - 1])).toFixed(2)
       );
     }
-  }
+    return 0;
+  };
 
-  return calculatedPaces;
+  // Calculate paces and times for each type
+  const RecoveryPace = interpolatePace(originalPaces.Recovery);
+  const EasyPace = interpolatePace(originalPaces.Easy);
+  const MediumPace = interpolatePace(originalPaces.Medium);
+  const MilePace = interpolatePace(originalPaces.Mile);
+  const fiveKPace = interpolatePace(originalPaces.fiveK);
+  const tenKPace = interpolatePace(originalPaces.tenK);
+  const HalfPace = interpolatePace(originalPaces.Half);
+  const MarathonPace = interpolatePace(originalPaces.Marathon);
+
+  return {
+    Recovery: {
+      pace: RecoveryPace,
+      time: totalTimeForDistance(RecoveryPace, 1),
+    },
+    Easy: {
+      pace: EasyPace,
+      time: totalTimeForDistance(EasyPace, 1),
+    },
+    Medium: {
+      pace: MediumPace,
+      time: totalTimeForDistance(MediumPace, 1),
+    },
+    Mile: {
+      pace: MilePace,
+      time: totalTimeForDistance(MilePace, 1),
+    },
+    fiveK: {
+      pace: fiveKPace,
+      time: totalTimeForDistance(fiveKPace, 3.10686),
+    },
+    tenK: {
+      pace: tenKPace,
+      time: totalTimeForDistance(tenKPace, 6.21371),
+    },
+    Half: {
+      pace: HalfPace,
+      time: totalTimeForDistance(HalfPace, 13.1094),
+    },
+    Marathon: {
+      pace: MarathonPace,
+      time: totalTimeForDistance(MarathonPace, 26.2188),
+    },
+  };
 };
 
 export const generatePaces = (
@@ -108,6 +154,8 @@ const speedWorkouts = [
   { desc: "10x600m @ 5K pace (~5 miles w/ jogs)", mileage: 5 },
   { desc: "8x800m @ 5K pace (~6 miles w/ jogs)", mileage: 6 },
   { desc: "5x1 mile @ 10K pace (~7 miles w/ jogs)", mileage: 6 },
+  { desc: "Fartlek 8 x 2 minutes @ 5K w/ 1 min jogs", mileage: 5 },
+  { desc: "8 x 60 seconds uphill w/ jogs", mileage: 5 },
   //{ desc: "4x2 miles @ HM pace (~9 miles w/ jogs)", mileage: 9 },
 ];
 
@@ -123,7 +171,7 @@ export const generateTableData = (
   let totalPlannedMileage = 0;
 
   // Precompute which weeks will be max mileage (last 2 before taper)
-  const maxWeeks = [taperStartWeek - 4, taperStartWeek - 3];
+  const maxWeeks = [taperStartWeek - 2, taperStartWeek - 1];
 
   const tableData = Array.from({ length: weeks }, (_, weekIndex) => {
     let weeklyMileage: number;
@@ -179,10 +227,22 @@ export const generateTableData = (
     let speedWork = null;
     let speedWorkMileage = 0;
 
-    // Assign long run to Sunday first (will add leftovers later)
+    // Determine special race weeks
+    const tenKWeek = Math.round(weeks / 3) - 1; // 0-based index
+    const halfMarathonWeek = Math.round((2 * weeks) / 3) - 1; // 0-based index
+
+    // Assign Sunday: 10K race, Half Marathon race, or long run
     if (weekPlan.sunday === "Run") {
-      longRunMiles = Math.ceil(weeklyMileage * 0.4);
-      weekPlan.sunday = `${longRunMiles}`;
+      if (weekIndex === tenKWeek) {
+        weekPlan.sunday = "10K (Race)";
+        longRunMiles = 6; // 10K ~ 6 miles
+      } else if (weekIndex === halfMarathonWeek) {
+        weekPlan.sunday = "Half (Race)";
+        longRunMiles = 13; // Half marathon ~ 13 miles
+      } else {
+        longRunMiles = Math.ceil(weeklyMileage * 0.45);
+        weekPlan.sunday = `${longRunMiles}`;
+      }
     }
 
     // Assign speed work on Tuesday
@@ -272,6 +332,30 @@ export const generateTableData = (
       });
     }
 
+    // Calculate the true total miles for the week
+    const getMiles = (val: string) => {
+      if (!val) return 0;
+      if (val === "Rest") return 0;
+      if (val.startsWith("10K")) return 6;
+      if (val.startsWith("Half")) return 13;
+      const sw = speedWorkouts.find(sw => val.startsWith(sw.desc));
+      if (sw) return sw.mileage;
+      return parseInt(val) || 0;
+    };
+
+    // --- NEW: For half marathon week, cap all days at 6 miles except Sunday ---
+    if (weekIndex === halfMarathonWeek) {
+      Object.keys(weekPlan).forEach((day) => {
+        if (
+          weekPlan[day] !== "Rest" &&
+          day !== "sunday" &&
+          getMiles(weekPlan[day]) > 6
+        ) {
+          weekPlan[day] = "6";
+        }
+      });
+    }
+
     // Special handling for the final week (taper, no Sat/Sun runs, max 5 miles/day)
     if (weekIndex === weeks - 1) {
       weekPlan.saturday = "Rest";
@@ -292,16 +376,6 @@ export const generateTableData = (
       });
     }
 
-    // Calculate the true total miles for the week
-    const getMiles = (val: string) => {
-      if (!val) return 0;
-      if (val === "Rest") return 0;
-      // If it's a speed work description, use the mileage from the speedWork object
-      const sw = speedWorkouts.find(sw => val.startsWith(sw.desc));
-      if (sw) return sw.mileage;
-      // Otherwise, parse as number
-      return parseInt(val) || 0;
-    };
     const totalMiles =
       getMiles(weekPlan.monday) +
       getMiles(weekPlan.tuesday) +

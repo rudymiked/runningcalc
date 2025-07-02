@@ -28,8 +28,8 @@ const App = () => {
             indicatorColor="secondary"
             aria-label="navigation tabs"
           >
-            <Tab label="Marathon Block" component={Link} to="/marathonblock" />
             <Tab label="Calculators" component={Link} to="/calculators" />
+            <Tab label="Marathon Block" component={Link} to="/marathonblock" />
             <Tab label="About" component={Link} to="/about" />
           </Tabs>
         </Toolbar>
@@ -39,8 +39,8 @@ const App = () => {
       <Box sx={{ paddingTop: 8, padding: 2 }}>
         <Routes>
           <Route path="/" element={<Calculators />} />
-          <Route path="/marathonblock" element={<MarathonBlock />} />
           <Route path="/calculators" element={<Calculators />} />
+          <Route path="/marathonblock" element={<MarathonBlock />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Box>

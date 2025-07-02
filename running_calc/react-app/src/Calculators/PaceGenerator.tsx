@@ -4,7 +4,7 @@ import { dropDownStyle } from "../App";
 import { staticData, type IStaticData } from "../utils/staticData";
 import React from "react";
 import { generatePaces, type IPaceData } from "../utils/generateBlockData";
-import { decimalPaceToString } from "../utils/utils";
+import { decimalPaceToString, removeLeadingZerosAndColons } from "../utils/utils";
 
 // --- PaceGenerator Component ---
 export const PaceGenerator = () => {
@@ -73,7 +73,7 @@ export const PaceGenerator = () => {
             <ul>
               {Object.entries(paces).map(([paceType, paceValue]) => (
                 <li key={paceType} style={{ listStyleType: "none", textAlign: "justify" }}>
-                  <b>{paceType}</b>: {decimalPaceToString(paceValue)}
+                  <b>{paceType}</b>: {decimalPaceToString(paceValue.pace)} ({removeLeadingZerosAndColons(paceValue.time)})
                 </li>
               ))}
             </ul>
