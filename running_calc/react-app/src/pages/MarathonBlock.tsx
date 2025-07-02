@@ -19,9 +19,10 @@ import {
 } from "@mui/material";
 import { generateTableData, type ITrainingPlan } from "../utils/generateBlockData"; // Import the utility function
 import { staticData, type IStaticData } from "../utils/staticData";
-import { decimalPaceToString, removeLeadingZerosAndColons } from "../utils/utils";
+import { decimalPaceToString } from "../utils/utils";
 import { dropDownStyle } from "../App";
 import { generatePaces, type IPaceData } from "../utils/generatePaces";
+import { PaceList } from "../Components/PaceList";
 
 const MarathonBlock = () => {
   const [tableData, setTableData] = useState<ITrainingPlan[]>([]);
@@ -188,20 +189,7 @@ const MarathonBlock = () => {
           <Stack>
             {/* Paces Section */}
               <Box>
-                <Typography variant="h6" gutterBottom>
-                  Paces (min/mile):
-                </Typography>
-                {paces && Object.keys(paces).length > 0 ? (
-                  <ul>
-                    {Object.entries(paces).map(([paceType, paceValue]) => (
-                      <li key={paceType} style={{ listStyleType: "none", textAlign: "justify" }}>
-                        <b>{paceType}</b>: {decimalPaceToString(paceValue.pace)} ({removeLeadingZerosAndColons(paceValue.time)})
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <Typography>No paces generated yet.</Typography>
-                )}
+                <PaceList paces={paces} />
               </Box>
           </Stack>
         </Grid>
