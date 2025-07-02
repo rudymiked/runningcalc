@@ -1,15 +1,11 @@
+import { timeToSeconds } from "./utils";
+
 // Function to predict marathon time based on input times
 export const predictMarathonTime = (halfMarathonTime: string, fiveKTime: string, tenKTime: string) => {
     let marathonMinutes = 0;
     let halfMarathonPredictionInMinutes = 0;
     let fiveKPredictionInMinutes = 0;
     let tenKPredictionInMinutes = 0;
-
-    // Convert time string (e.g., "1:30:45") to seconds
-    const timeToSeconds = (time: string): number => {
-        const [hours, minutes, seconds] = time.split(":").map(Number);
-        return (hours || 0) * 3600 + (minutes || 0) * 60 + (seconds || 0);
-    };
 
     // Predict marathon time based on half marathon time
     if (halfMarathonTime) {

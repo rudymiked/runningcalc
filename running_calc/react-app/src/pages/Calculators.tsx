@@ -1,5 +1,5 @@
 import { Box, Stack, Tab, Tabs } from "@mui/material";
-import { MarathonTimePrediction } from "../Calculators/MarathonTimePredictor";
+import { RacePrediction } from "../Calculators/RacePredictor";
 import { PaceGenerator } from "../Calculators/PaceGenerator";
 import { type SyntheticEvent, useState } from "react";
 
@@ -17,13 +17,13 @@ export const Calculators = () => {
       <Stack>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tab} onChange={handleTabChange} aria-label="calculator tabs">
-        <Tab label="Marathon Time Prediction" />
+        <Tab label="Race Time Prediction" />
         <Tab label="Pace Generator" />
         </Tabs>
       </Box>
       {tab === 0 && (
         <Box sx={{ mt: 2 }}>
-        <MarathonTimePrediction />
+        <RacePrediction />
         </Box>
       )}
       {tab === 1 && (
