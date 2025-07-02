@@ -12,7 +12,16 @@ export const PaceList = ({ paces }: { paces: IPaceData | undefined }) => (
       <ul>
         {Object.entries(paces).map(([paceType, paceValue]) => (
           <li key={paceType} style={{ listStyleType: "none", textAlign: "justify" }}>
-            <b>{paceType}</b>: {decimalPaceToString(paceValue.pace)} ({removeLeadingZerosAndColons(paceValue.time)})
+            {/* If pace and time are the same, only show pace */}
+            {decimalPaceToString(paceValue.pace) == removeLeadingZerosAndColons(paceValue.time) ? (
+              <>
+                <b>{paceType}</b>: {decimalPaceToString(paceValue.pace)}
+              </>
+            ) : (
+              <>
+                <b>{paceType}</b>: {decimalPaceToString(paceValue.pace)} ({removeLeadingZerosAndColons(paceValue.time)})
+              </>
+            )}
           </li>
         ))}
       </ul>
