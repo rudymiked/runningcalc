@@ -3,8 +3,8 @@ import { Box, Typography, Button, Stack, FormControl, InputLabel, MenuItem, Sele
 import { dropDownStyle } from "../App";
 import { staticData, type IStaticData } from "../utils/staticData";
 import React from "react";
-import { generatePaces, type IPaceData } from "../utils/generateBlockData";
 import { decimalPaceToString, removeLeadingZerosAndColons } from "../utils/utils";
+import { generatePaces, type IPaceData } from "../utils/generatePaces";
 
 // --- PaceGenerator Component ---
 export const PaceGenerator = () => {

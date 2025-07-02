@@ -17,10 +17,11 @@ import {
   Grid,
   Stack,
 } from "@mui/material";
-import { generatePaces, generateTableData, type IPaceData, type ITrainingPlan } from "../utils/generateBlockData"; // Import the utility function
+import { generateTableData, type ITrainingPlan } from "../utils/generateBlockData"; // Import the utility function
 import { staticData, type IStaticData } from "../utils/staticData";
 import { decimalPaceToString, removeLeadingZerosAndColons } from "../utils/utils";
 import { dropDownStyle } from "../App";
+import { generatePaces, type IPaceData } from "../utils/generatePaces";
 
 const MarathonBlock = () => {
   const [tableData, setTableData] = useState<ITrainingPlan[]>([]);
