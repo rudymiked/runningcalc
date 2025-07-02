@@ -30,6 +30,10 @@ jobs:
           npm run test --if-present
         working-directory: ./running_calc/react-app
 
+      - name: List files after build
+        run: ls -l
+        working-directory: ./running_calc/react-app
+
       - name: Zip artifact for deployment
         run: zip -r release.zip build
         working-directory: ./running_calc/react-app
@@ -62,3 +66,5 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_142E3018C27F4205823E5E8AAF61A97E }}
+      - run: ls -l
+        working-directory: ./running_calc/react-app
