@@ -103,7 +103,7 @@ export const generateTableData = (
         weekPlan.sunday = "Half (Race)";
         longRunMiles = 13; // Half marathon ~ 13 miles
       } else {
-        longRunMiles = Math.ceil(weeklyMileage * 0.45);
+        longRunMiles = Math.ceil(weeklyMileage * 0.35);
         weekPlan.sunday = `${longRunMiles}`;
       }
     }
