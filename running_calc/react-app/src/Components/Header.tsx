@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
-import runner from '/running_favicon.png';
 
 const Header: React.FC = () => {
   const theme = useTheme();
@@ -39,7 +38,7 @@ const Header: React.FC = () => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Link to="/">
             <img
-              src={runner}
+              src={"/running_favicon.png"}
               alt="Logo"
               style={{ width: 'auto', height: 25, marginRight: 16 }}
             />
