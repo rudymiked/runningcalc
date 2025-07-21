@@ -20,7 +20,7 @@ import {
 import { generateTableData, type ITrainingPlan } from "../utils/generateBlockData"; // Import the utility function
 import { staticData, type IStaticData } from "../utils/staticData";
 import { decimalPaceToString } from "../utils/utils";
-import { dropDownStyle } from "../App";
+import { dropDownStyle } from "../styles";
 import { generatePaces, type IPaceData } from "../utils/generatePaces";
 import { PaceList } from "../Components/PaceList";
 

@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
-import runner from '../../public/running_favicon.png';
+import runner from '/running_favicon.png';
 
 const Header: React.FC = () => {
   const theme = useTheme();

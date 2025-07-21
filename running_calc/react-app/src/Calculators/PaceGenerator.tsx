@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Box, Typography, Button, Stack, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { dropDownStyle } from "../App";
+import { Box, Typography, Button, Stack, FormControl, InputLabel, MenuItem, Select, Grid } from "@mui/material";
+import { dropDownStyle } from "../styles";
 import { staticData, type IStaticData } from "../utils/staticData";
 import React from "react";
 import { generatePaces, type IPaceData } from "../utils/generatePaces";
@@ -31,44 +31,50 @@ export const PaceGenerator = () => {
       <Typography variant="h4" gutterBottom>
         Pace Generator
       </Typography>
-      <Stack>
-        <Box>
-          <FormControl style={dropDownStyle} margin="normal" variant="outlined">
-            <InputLabel id="marathon-time-label">Marathon Time</InputLabel>
-            <Select
-              labelId="marathon-time-label"
-              value={marathonTime}
-              onChange={(e) => setMarathonTime(e.target.value)}
-              label="Marathon Time"
-            >
-              {data.marathon_times.map((time) => (
-                <MenuItem key={time} value={time}>
-                  {time}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Stack>
-      <Stack>
-        <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ marginTop: 2 }}
-            onClick={handleGeneratePaces}
-          >
-            Generate Paces
-          </Button>
-        </Box>
-      </Stack>
-      <Stack>
-        {/* Paces Section */}
-        <Box>
-            <PaceList paces={paces} />
-        </Box>
-      </Stack>
+      <Grid container spacing={4}>
+        <Grid>
+          <Stack>
+            <Box>
+              <FormControl style={dropDownStyle} margin="normal" variant="outlined">
+                <InputLabel id="marathon-time-label">Marathon Time</InputLabel>
+                <Select
+                  labelId="marathon-time-label"
+                  value={marathonTime}
+                  onChange={(e) => setMarathonTime(e.target.value)}
+                  label="Marathon Time"
+                >
+                  {data.marathon_times.map((time) => (
+                    <MenuItem key={time} value={time}>
+                      {time}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Stack>
+          <Stack>
+            <Box>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{ marginTop: 2 }}
+                onClick={handleGeneratePaces}
+              >
+                Generate Paces
+              </Button>
+            </Box>
+          </Stack>
+      </Grid>
+        <Grid>
+          <Stack>
+            {/* Paces Section */}
+            <Box>
+                <PaceList paces={paces} />
+            </Box>
+          </Stack>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

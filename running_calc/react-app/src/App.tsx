@@ -1,38 +1,38 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { AppBar, Toolbar, Tabs, Tab, Box, CssBaseline } from "@mui/material";
-import "./App.css";
-import MarathonBlock from "./pages/MarathonBlock";
-import Calculators from "./pages/Calculators";
-import About from "./pages/About";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Box, CssBaseline, Container } from "@mui/material";
 import Header from "./Components/Header";
+import Calculators from "./pages/Calculators";
+import MarathonBlock from "./pages/MarathonBlock";
+import About from "./pages/About";
 
-export const dropDownStyle = { minWidth:"150px" };
-export const textAreaStyle = { minWidth:"200px"};
+const App = () => (
+  <Router>
+    <CssBaseline />
 
-const App = () => {
-  const [value, setValue] = React.useState(0);
+    <Header />
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  return (
-    <Router>
-      <CssBaseline />
-      {/* Navigation Bar */}
-      <Header />
-      {/* Content Section */}
-      <Box sx={{ paddingTop: 8, padding: 4 }}>
+    {/* Full-width scroll area */}
+    <Box
+      sx={{
+        position: "absolute",
+        top: "64px",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflowY: "auto",
+      }}
+    >
+      {/* Centers content, max width “md” */}
+      <Container maxWidth="md" sx={{ pt: 4, pb: 4 }}>
         <Routes>
           <Route path="/" element={<Calculators />} />
           <Route path="/calculators" element={<Calculators />} />
           <Route path="/marathonblock" element={<MarathonBlock />} />
           <Route path="/about" element={<About />} />
         </Routes>
-      </Box>
-    </Router>
-  );
-};
+      </Container>
+    </Box>
+  </Router>
+);
 
 export default App;

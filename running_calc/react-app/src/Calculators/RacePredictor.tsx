@@ -113,7 +113,8 @@ export const RacePrediction = () => {
         Race Time Prediction
       </Typography>
       <br />
-      <Grid container spacing={2}>
+      <Grid container spacing={4}>
+        <Grid>
         <Stack spacing={5} paddingBottom={3}>
           {/* Half Marathon Time */}
           <Stack>
@@ -157,53 +158,7 @@ export const RacePrediction = () => {
                   onChange={(e) => setUseHalfMarathon(e.target.checked)}
                 />
               }
-              label="Use Half Marathon Time"
-            />
-          </Stack>
-
-          {/* 5K Time */}
-          <Stack>
-            <Typography>5K Time</Typography>
-            <Grid container spacing={1}>
-              <Stack>
-                <Select
-                  fullWidth
-                  value={fiveKTime.hours}
-                  onChange={(e) => setFiveKTime({ ...fiveKTime, hours: Number(e.target.value) })}
-                >
-                  {generateOptions(1)}
-                </Select>
-                <Typography variant="caption">Hours</Typography>
-              </Stack>
-              <Stack>
-                <Select
-                  fullWidth
-                  value={fiveKTime.minutes}
-                  onChange={(e) => setFiveKTime({ ...fiveKTime, minutes: Number(e.target.value) })}
-                >
-                  {generateOptions(40)}
-                </Select>
-                <Typography variant="caption">Minutes</Typography>
-              </Stack>
-              <Stack>
-                <Select
-                  fullWidth
-                  value={fiveKTime.seconds}
-                  onChange={(e) => setFiveKTime({ ...fiveKTime, seconds: Number(e.target.value) })}
-                >
-                  {generateOptions(59)}
-                </Select>
-                <Typography variant="caption">Seconds</Typography>
-              </Stack>
-            </Grid>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={useFiveK}
-                  onChange={(e) => setUseFiveK(e.target.checked)}
-                />
-              }
-              label="Use 5K Time"
+              label="Use Half Marathon"
             />
           </Stack>
 
@@ -249,7 +204,53 @@ export const RacePrediction = () => {
                   onChange={(e) => setUseTenK(e.target.checked)}
                 />
               }
-              label="Use 10K Time"
+              label="Use 10K"
+            />
+          </Stack>
+
+          {/* 5K Time */}
+          <Stack>
+            <Typography>5K Time</Typography>
+            <Grid container spacing={1}>
+              <Stack>
+                <Select
+                  fullWidth
+                  value={fiveKTime.hours}
+                  onChange={(e) => setFiveKTime({ ...fiveKTime, hours: Number(e.target.value) })}
+                >
+                  {generateOptions(1)}
+                </Select>
+                <Typography variant="caption">Hours</Typography>
+              </Stack>
+              <Stack>
+                <Select
+                  fullWidth
+                  value={fiveKTime.minutes}
+                  onChange={(e) => setFiveKTime({ ...fiveKTime, minutes: Number(e.target.value) })}
+                >
+                  {generateOptions(40)}
+                </Select>
+                <Typography variant="caption">Minutes</Typography>
+              </Stack>
+              <Stack>
+                <Select
+                  fullWidth
+                  value={fiveKTime.seconds}
+                  onChange={(e) => setFiveKTime({ ...fiveKTime, seconds: Number(e.target.value) })}
+                >
+                  {generateOptions(59)}
+                </Select>
+                <Typography variant="caption">Seconds</Typography>
+              </Stack>
+            </Grid>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={useFiveK}
+                  onChange={(e) => setUseFiveK(e.target.checked)}
+                />
+              }
+              label="Use 5K"
             />
           </Stack>
 
@@ -263,25 +264,30 @@ export const RacePrediction = () => {
               Predict Race Times
             </Button>
           </Stack>
-
+          <Typography variant="caption" style={{ maxWidth: "200px" }}>
+            Use your race times above to predict your marathon time. If you select multiple races, an average will be calculated based on the selected times.
+          </Typography>
+        </Stack>
+        </Grid>
+        <Grid>
           {/* Predicted Race Times */}
-          {predictedTimes && (
+          {/* {predictedTimes && ( */}
             <Stack style={{ textAlign: "justify" }}>
               <Typography variant="h6">
-                <b>Marathon</b>: {predictedTimes.marathon}
+                <b>Marathon</b>: {predictedTimes?.marathon}
               </Typography>
               <Typography variant="h6">
-                <b>Half Marathon</b>: {predictedTimes.half}
+                <b>Half Marathon</b>: {predictedTimes?.half}
               </Typography>
               <Typography variant="h6">
-                <b>10K</b>: {predictedTimes.tenK}
+                <b>10K</b>: {predictedTimes?.tenK}
               </Typography>
               <Typography variant="h6">
-                <b>5K</b>: {predictedTimes.fiveK}
+                <b>5K</b>: {predictedTimes?.fiveK}
               </Typography>
             </Stack>
-          )}
-        </Stack>
+          {/* )} */}
+        </Grid>
       </Grid>
     </Box>
   );
