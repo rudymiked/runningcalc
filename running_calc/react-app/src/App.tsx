@@ -1,10 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { AppBar, Toolbar, Tabs, Tab, Box } from "@mui/material";
+import { AppBar, Toolbar, Tabs, Tab, Box, CssBaseline } from "@mui/material";
 import "./App.css";
 import MarathonBlock from "./pages/MarathonBlock";
 import Calculators from "./pages/Calculators";
 import About from "./pages/About";
+import Header from "./Components/Header";
 
 export const dropDownStyle = { minWidth:"150px" };
 export const textAreaStyle = { minWidth:"200px"};
@@ -18,25 +19,11 @@ const App = () => {
 
   return (
     <Router>
+      <CssBaseline />
       {/* Navigation Bar */}
-      <AppBar position="fixed">
-        <Toolbar>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="inherit"
-            indicatorColor="secondary"
-            aria-label="navigation tabs"
-          >
-            <Tab label="Calculators" component={Link} to="/calculators" />
-            <Tab label="Marathon Block" component={Link} to="/marathonblock" />
-            <Tab label="About" component={Link} to="/about" />
-          </Tabs>
-        </Toolbar>
-      </AppBar>
-
+      <Header />
       {/* Content Section */}
-      <Box sx={{ paddingTop: 8, padding: 2 }}>
+      <Box sx={{ paddingTop: 8, padding: 4 }}>
         <Routes>
           <Route path="/" element={<Calculators />} />
           <Route path="/calculators" element={<Calculators />} />

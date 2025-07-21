@@ -13,7 +13,7 @@ export const Calculators = () => {
   }
 
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box sx={{ padding: 0 }}>
       <Stack>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tab} onChange={handleTabChange} aria-label="calculator tabs">
