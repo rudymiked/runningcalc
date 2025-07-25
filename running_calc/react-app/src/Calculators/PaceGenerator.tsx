@@ -29,7 +29,7 @@ export const PaceGenerator = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
-        Pace Generator
+        Training Pace Generator
       </Typography>
       <Grid container spacing={4}>
         <Grid>
