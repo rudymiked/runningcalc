@@ -6,8 +6,8 @@ import React from "react";
 import { generatePaces, type IPaceData } from "../utils/generatePaces";
 import { PaceList } from "../Components/PaceList";
 
-// --- PaceGenerator Component ---
-export const PaceGenerator = () => {
+// --- TraingingPace Component ---
+export const TrainingPaces = () => {
   const [marathonTime, setMarathonTime] = useState<string>("2:00");
   const [paces, setPaces] = useState<IPaceData>();
   const [data, setData] = useState<IStaticData>({

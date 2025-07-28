@@ -32,15 +32,15 @@ const Header: React.FC = () => {
     //   position="static"
       elevation={2}
       component="header"
-      sx={{ backgroundColor: '#fefefbff', color: 'black', padding: '10px 0 ', height: 70 }}
+      sx={{ backgroundColor: '#F7F6F5', color: 'black', padding: '10px 0 ', height: 70 }}
     >
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Link to="/">
             <img
-              src={"/running_favicon.png"}
+              src={"/runningresources.png"}
               alt="Logo"
-              style={{ width: 'auto', height: 25, marginRight: 16 }}
+              style={{ width: 'auto', height: 60, marginRight: 16, marginTop: -10 }}
             />
           </Link>
         </Box>

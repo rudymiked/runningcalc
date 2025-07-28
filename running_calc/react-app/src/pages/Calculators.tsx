@@ -1,6 +1,6 @@
 import { Box, Tabs, Tab } from "@mui/material";
 import { RacePrediction } from "../Calculators/RacePredictor";
-import { PaceGenerator } from "../Calculators/PaceGenerator";
+import { TrainingPaces } from "../Calculators/TrainingPaces";
 import { useState, type SyntheticEvent } from "react";
 
 // --- Main Calculators Page ---
@@ -28,7 +28,7 @@ export const Calculators = () => {
       >
         <Tabs value={tab} onChange={handleTabChange} centered>
           <Tab label="Race Time Prediction" />
-          <Tab label="Pace Generator" />
+          <Tab label="Trainging Paces" />
         </Tabs>
       </Box>
 
@@ -38,7 +38,7 @@ export const Calculators = () => {
           <RacePrediction />
         </Box>
         <Box sx={{ display: tab === 1 ? 'block' : 'none' }}>
-          <PaceGenerator />
+          <TrainingPaces />
         </Box>
       </Box>
     </Box>

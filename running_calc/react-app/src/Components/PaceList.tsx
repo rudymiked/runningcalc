@@ -25,7 +25,7 @@ export const PaceList = ({ paces }: { paces: IPaceData | undefined }) => (
               paceType = "5k";
               break;
             default:
-              //paceType = paceType.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
+              paceType = paceType;
           }
 
           return (
