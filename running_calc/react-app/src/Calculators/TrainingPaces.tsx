@@ -31,6 +31,9 @@ export const TrainingPaces = () => {
       <Typography variant="h4" gutterBottom>
         Training Pace Generator
       </Typography>
+      <Typography variant="body1" gutterBottom>
+        Calculate your training paces based on your marathon time.
+      </Typography>
       <Grid container spacing={4}>
         <Grid>
           <Stack>

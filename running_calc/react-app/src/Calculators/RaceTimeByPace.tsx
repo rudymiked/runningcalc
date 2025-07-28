@@ -1,14 +1,8 @@
-import { Box, Typography, Stack, Select, MenuItem, List, ListItem } from "@mui/material";
+import { Box, Typography, Stack, Select, MenuItem, List } from "@mui/material";
 import { useState } from "react";
 
-const generateOptions = (limit: number) => {
-  return Array.from({ length: limit + 1 }, (_, i) => (
-    <MenuItem key={i} value={i}>{i}</MenuItem>
-  ));
-};
-
 const RaceTimeByPace: React.FC = () => {
-  const [paceTime, setPaceTime] = useState({ hours: 0, minutes: 7, seconds: 30 });
+  const [paceTime, setPaceTime] = useState({ hours: 0, minutes: 8, seconds: 0 });
 
   const raceDistances = {
     Mile: 1,
@@ -17,6 +11,12 @@ const RaceTimeByPace: React.FC = () => {
     "Half Marathon": 13.1094,
     Marathon: 26.2188,
   };
+
+  const generateOptions = (limit: number) => {
+    return Array.from({ length: limit + 1 }, (_, i) => (
+        <MenuItem key={i} value={i}>{i}</MenuItem>
+    ));
+    };
 
   const calculateRaceTime = (distance: number): string => {
     const { hours, minutes, seconds } = paceTime;
@@ -30,7 +30,7 @@ const RaceTimeByPace: React.FC = () => {
 
     const hour = raceHours > 0 ? `${raceHours}:` : "";
     const minute = raceMinutes > 0 ? `${raceMinutes}:` : "";
-    const second = raceSeconds > 0 ? `${raceSeconds}` : "";
+    const second = raceSeconds > 0 ? raceSeconds < 10 ? `0${raceSeconds}` : `${raceSeconds}` : "00";
 
     return `${hour}${minute}${second}`.trim() || "0";
   };

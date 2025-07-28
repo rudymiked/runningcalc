@@ -3,6 +3,7 @@ import { RacePrediction } from "../Calculators/RacePredictor";
 import { TrainingPaces } from "../Calculators/TrainingPaces";
 import { useState, type SyntheticEvent } from "react";
 import RaceTimeByPace from "../Calculators/RaceTimeByPace";
+import PaceByRaceTime from "../Calculators/PaceByRaceTime";
 
 // --- Main Calculators Page ---
 export const Calculators = () => {
@@ -31,6 +32,7 @@ export const Calculators = () => {
           <Tab label="Race Time Prediction" />
           <Tab label="Trainging Paces" />
           <Tab label="Race Time By Pace" />
+          <Tab label="Pace By Race Time" />
         </Tabs>
       </Box>
 
@@ -44,6 +46,9 @@ export const Calculators = () => {
         </Box>
         <Box sx={{ display: tab === 2 ? 'block' : 'none' }}>
           <RaceTimeByPace />
+        </Box>
+        <Box sx={{ display: tab === 3 ? 'block' : 'none' }}>
+          <PaceByRaceTime />
         </Box>
       </Box>
     </Box>

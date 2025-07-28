@@ -37,6 +37,9 @@ const handlePredictAll = () => {
       <Typography variant="h4" gutterBottom>
         Race Time Prediction
       </Typography>
+      <Typography>
+        Use your race times to predict your marathon time. If you select multiple races, an average will be calculated based on the selected times.
+      </Typography>
       <br />
       <Grid container spacing={4}>
         <Grid>
@@ -206,11 +209,6 @@ const handlePredictAll = () => {
               </Typography>
               <Typography variant="h6">
                 <b>5K</b>: {predictedTimes && (<> {predictedTimes?.fiveK.time} ({predictedTimes?.fiveK.pace}) </>)}
-              </Typography>
-            </Stack>
-            <Stack spacing={2} paddingTop={2}>
-              <Typography variant="caption" style={{ maxWidth: "200px" }}>
-                Use your race times to predict your marathon time. If you select multiple races, an average will be calculated based on the selected times.
               </Typography>
             </Stack>
           {/* )} */}
