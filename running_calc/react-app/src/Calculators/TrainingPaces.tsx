@@ -10,19 +10,21 @@ import { PaceList } from "../Components/PaceList";
 export const TrainingPaces = () => {
   const [marathonTime, setMarathonTime] = useState<string>("2:00");
   const [paces, setPaces] = useState<IPaceData>();
-  const [data, setData] = useState<IStaticData>({
-    marathon_times: [],
-    days_per_week: [],
-    average_mileage: [],
-    maximum_mileage: [],
-    weeks: [],
-  });
+  const [data, setData] = useState<IStaticData>(staticData);
 
   React.useEffect(() => {
     setData(staticData);
   }, []);
 
-  const handleGeneratePaces = () => {
+  const handleGeneratePaces = (e: React.ChangeEvent<Omit<HTMLInputElement, "value"> & {
+    value: string;
+}> | (Event & {
+    target: {
+        value: string;
+        name: string;
+    };
+})) => {
+    setMarathonTime(e.target.value)
     setPaces(generatePaces(marathonTime));
   };
 
@@ -43,7 +45,7 @@ export const TrainingPaces = () => {
                 <Select
                   labelId="marathon-time-label"
                   value={marathonTime}
-                  onChange={(e) => setMarathonTime(e.target.value)}
+                  onChange={(e) => handleGeneratePaces(e)}
                   label="Marathon Time"
                 >
                   {data.marathon_times.map((time) => (
@@ -53,19 +55,6 @@ export const TrainingPaces = () => {
                   ))}
                 </Select>
               </FormControl>
-            </Box>
-          </Stack>
-          <Stack>
-            <Box>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{ marginTop: 2 }}
-                onClick={handleGeneratePaces}
-              >
-                Generate Paces
-              </Button>
             </Box>
           </Stack>
       </Grid>

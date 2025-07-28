@@ -4,6 +4,7 @@ import { TrainingPaces } from "../Calculators/TrainingPaces";
 import { useState, type SyntheticEvent } from "react";
 import RaceTimeByPace from "../Calculators/RaceTimeByPace";
 import PaceByRaceTime from "../Calculators/PaceByRaceTime";
+import VDOTDashboard, { type IVDOTDashboardProps } from "../Calculators/VDOT/VDOTDashboard";
 
 // --- Main Calculators Page ---
 export const Calculators = () => {
@@ -12,6 +13,18 @@ export const Calculators = () => {
   function handleTabChange(event: SyntheticEvent<Element, Event>, value: number): void {
     setTab(value);
   }
+
+  const vdotEntries = [
+  { date: '2025-04-15', raceType: '5K', result: '18:30', vdot: 55 },
+  { date: '2025-07-10', raceType: '10K', result: '38:30', vdot: 56 }
+];
+
+  const weeksUntilRace = 18;
+
+  const vdotDashboardProps: IVDOTDashboardProps = {
+    vdotEntries: vdotEntries,
+    weeksRemaining: weeksUntilRace
+  };
 
   return (
     <Box sx={{ px: 2, pt: 10, position: 'relative' }}>
@@ -33,6 +46,7 @@ export const Calculators = () => {
           <Tab label="Trainging Paces" />
           <Tab label="Race Time By Pace" />
           <Tab label="Pace By Race Time" />
+          {/* <Tab label="VDOT Dashboard" /> */}
         </Tabs>
       </Box>
 
@@ -49,6 +63,9 @@ export const Calculators = () => {
         </Box>
         <Box sx={{ display: tab === 3 ? 'block' : 'none' }}>
           <PaceByRaceTime />
+        </Box>
+        <Box sx={{ display: tab === 4 ? 'block' : 'none' }}>
+          <VDOTDashboard {...vdotDashboardProps}  />
         </Box>
       </Box>
     </Box>
