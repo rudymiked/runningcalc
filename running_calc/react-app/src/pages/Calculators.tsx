@@ -39,11 +39,21 @@ export const Calculators = () => {
           zIndex: 1000,
           borderBottom: 1,
           borderColor: 'divider',
+          '&::-webkit-scrollbar': { display: 'none' },
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+
         }}
       >
-        <Tabs value={tab} onChange={handleTabChange} centered>
+        <Tabs
+          value={tab}
+          onChange={handleTabChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="scrollable tabs"
+        >
           <Tab label="Race Time Prediction" />
-          <Tab label="Trainging Paces" />
+          <Tab label="Training Paces" />
           <Tab label="Race Time By Pace" />
           <Tab label="Pace By Race Time" />
           {/* <Tab label="VDOT Dashboard" /> */}
