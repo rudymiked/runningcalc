@@ -79,7 +79,7 @@ const RaceTimeByPace: React.FC = () => {
 
       <List>
         {Object.entries(raceDistances).map(([race, dist]) => (
-            <Stack style={{ textAlign: "justify" }}>
+            <Stack key={race} style={{ textAlign: "justify" }}>
                 <Typography variant="h6"><b>{race}</b>: {calculateRaceTime(dist)}</Typography>
             </Stack>
         ))}

@@ -15,15 +15,15 @@ export const RacePrediction = () => {
   const formatTime = (time: { hours: number; minutes: number; seconds: number }): string =>
     `${time.hours}:${time.minutes.toString().padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`;
 
-const handlePredictAll = () => {
-  setPredictedTimes(
-    predictAllRaces(
-      useHalfMarathon ? formatTime(halfMarathonTime) : "",
-      useFiveK ? formatTime(fiveKTime) : "",
-      useTenK ? formatTime(tenKTime) : ""
-    )
-  );
-};
+  const handlePredictAll = () => {
+    setPredictedTimes(
+      predictAllRaces(
+        useHalfMarathon ? formatTime(halfMarathonTime) : "",
+        useFiveK ? formatTime(fiveKTime) : "",
+        useTenK ? formatTime(tenKTime) : ""
+      )
+    );
+  };
 
   const generateOptions = (max: number) =>
     Array.from({ length: max + 1 }, (_, i) => (
@@ -31,6 +31,27 @@ const handlePredictAll = () => {
         {i}
       </MenuItem>
     ));
+
+  const handleSetHalfMarathonTime = (field: keyof typeof halfMarathonTime, value: number) => {
+    setHalfMarathonTime((prev) => ({ ...prev, [field]: value }));
+    if (field === 'hours' && value > 0 || field === 'minutes' && value > 0 || field === 'seconds' && value > 0) {
+      setUseHalfMarathon(true);
+    }
+  }
+
+  const handleSetFiveKTime = (field: keyof typeof fiveKTime, value: number) => {
+    setFiveKTime((prev) => ({ ...prev, [field]: value }));
+    if (field === 'hours' && value > 0 || field === 'minutes' && value > 0 || field === 'seconds' && value > 0) {
+      setUseFiveK(true);
+    }
+  }
+
+  const handleSetTenKTime = (field: keyof typeof tenKTime, value: number) => {
+    setTenKTime((prev) => ({ ...prev, [field]: value }));
+    if (field === 'hours' && value > 0 || field === 'minutes' && value > 0 || field === 'seconds' && value > 0) {
+      setUseTenK(true);
+    }
+  }
 
   return (
     <Box>
@@ -52,7 +73,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={halfMarathonTime.hours}
-                  onChange={(e) => setHalfMarathonTime({ ...halfMarathonTime, hours: Number(e.target.value) })}
+                  onChange={(e) => handleSetHalfMarathonTime("hours", Number(e.target.value))}
                 >
                   {generateOptions(3)}
                 </Select>
@@ -62,7 +83,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={halfMarathonTime.minutes}
-                  onChange={(e) => setHalfMarathonTime({ ...halfMarathonTime, minutes: Number(e.target.value) })}
+                  onChange={(e) => handleSetHalfMarathonTime("minutes", Number(e.target.value))}
                 >
                   {generateOptions(59)}
                 </Select>
@@ -72,7 +93,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={halfMarathonTime.seconds}
-                  onChange={(e) => setHalfMarathonTime({ ...halfMarathonTime, seconds: Number(e.target.value) })}
+                  onChange={(e) => handleSetHalfMarathonTime("seconds", Number(e.target.value))}
                 >
                   {generateOptions(59)}
                 </Select>
@@ -98,7 +119,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={tenKTime.hours}
-                  onChange={(e) => setTenKTime({ ...tenKTime, hours: Number(e.target.value) })}
+                  onChange={(e) => handleSetFiveKTime("hours", Number(e.target.value))}
                 >
                   {generateOptions(2)}
                 </Select>
@@ -108,7 +129,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={tenKTime.minutes}
-                  onChange={(e) => setTenKTime({ ...tenKTime, minutes: Number(e.target.value) })}
+                  onChange={(e) => handleSetFiveKTime("minutes", Number(e.target.value))}
                 >
                   {generateOptions(59)}
                 </Select>
@@ -118,7 +139,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={tenKTime.seconds}
-                  onChange={(e) => setTenKTime({ ...tenKTime, seconds: Number(e.target.value) })}
+                  onChange={(e) => handleSetFiveKTime("seconds", Number(e.target.value))}
                 >
                   {generateOptions(59)}
                 </Select>
@@ -144,7 +165,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={fiveKTime.hours}
-                  onChange={(e) => setFiveKTime({ ...fiveKTime, hours: Number(e.target.value) })}
+                  onChange={(e) => handleSetFiveKTime("hours", Number(e.target.value))}
                 >
                   {generateOptions(1)}
                 </Select>
@@ -154,7 +175,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={fiveKTime.minutes}
-                  onChange={(e) => setFiveKTime({ ...fiveKTime, minutes: Number(e.target.value) })}
+                  onChange={(e) => handleSetFiveKTime("minutes", Number(e.target.value))}
                 >
                   {generateOptions(40)}
                 </Select>
@@ -164,7 +185,7 @@ const handlePredictAll = () => {
                 <Select
                   fullWidth
                   value={fiveKTime.seconds}
-                  onChange={(e) => setFiveKTime({ ...fiveKTime, seconds: Number(e.target.value) })}
+                  onChange={(e) => handleSetFiveKTime("seconds", Number(e.target.value))}
                 >
                   {generateOptions(59)}
                 </Select>

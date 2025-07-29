@@ -8,12 +8,13 @@ import { PaceList } from "../Components/PaceList";
 
 // --- TraingingPace Component ---
 export const TrainingPaces = () => {
-  const [marathonTime, setMarathonTime] = useState<string>("2:00");
+  const [marathonTime, setMarathonTime] = useState<string>("4:00");
   const [paces, setPaces] = useState<IPaceData>();
   const [data, setData] = useState<IStaticData>(staticData);
 
   React.useEffect(() => {
     setData(staticData);
+    setPaces(generatePaces(marathonTime));
   }, []);
 
   const handleGeneratePaces = (e: React.ChangeEvent<Omit<HTMLInputElement, "value"> & {
@@ -36,36 +37,32 @@ export const TrainingPaces = () => {
       <Typography variant="body1" gutterBottom>
         Calculate your training paces based on your marathon time.
       </Typography>
-      <Grid container spacing={4}>
-        <Grid>
-          <Stack>
-            <Box>
-              <FormControl style={dropDownStyle} margin="normal" variant="outlined">
-                <InputLabel id="marathon-time-label">Marathon Time</InputLabel>
-                <Select
-                  labelId="marathon-time-label"
-                  value={marathonTime}
-                  onChange={(e) => handleGeneratePaces(e)}
-                  label="Marathon Time"
-                >
-                  {data.marathon_times.map((time) => (
-                    <MenuItem key={time} value={time}>
-                      {time}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Stack>
-      </Grid>
-        <Grid>
-          <Stack>
-            {/* Paces Section */}
-            <Box>
-                <PaceList paces={paces} />
-            </Box>
-          </Stack>
-        </Grid>
+      <Grid>
+        <Stack>
+          <Box>
+            <FormControl style={dropDownStyle} margin="normal" variant="outlined">
+              <InputLabel id="marathon-time-label">Marathon Time</InputLabel>
+              <Select
+                labelId="marathon-time-label"
+                value={marathonTime}
+                onChange={(e) => handleGeneratePaces(e)}
+                label="Marathon Time"
+              >
+                {data.marathon_times.map((time) => (
+                  <MenuItem key={time} value={time}>
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Stack>
+        <Stack>
+          {/* Paces Section */}
+          <Box>
+              <PaceList paces={paces} />
+          </Box>
+        </Stack>
       </Grid>
     </Box>
   );

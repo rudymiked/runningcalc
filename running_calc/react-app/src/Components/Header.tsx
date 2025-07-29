@@ -40,7 +40,7 @@ const Header: React.FC = () => {
             <img
               src={"/runningresources.png"}
               alt="Logo"
-              style={{ width: 'auto', height: 60, marginRight: 16, marginTop: -10 }}
+              style={{ width: 'auto', height: 50, marginRight: 16, marginTop: -10 }}
             />
           </Link>
         </Box>

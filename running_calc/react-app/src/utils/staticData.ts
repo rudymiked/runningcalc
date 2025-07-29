@@ -9,7 +9,7 @@ export interface IStaticData {
 export const staticData = (): IStaticData => {
   // Generate example data
   const marathon_times = [];
-  for (let hour = 2; hour < 6; hour++) {
+  for (let hour = 2; hour < 7; hour++) {
     for (let minute = 0; minute < 60; minute += 5) {
       marathon_times.push(`${hour}:${minute.toString().padStart(2, "0")}`);
     }
