@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Box, Typography, Button, Grid, Stack, Checkbox, FormControlLabel, MenuItem, Select } from "@mui/material";
 import { predictAllRaces, type IRacePredictions } from "../utils/predictAllRaces";
+import React from "react";
 
 // --- RacePrediction Component ---
 export const RacePrediction = () => {
@@ -14,6 +15,10 @@ export const RacePrediction = () => {
 
   const formatTime = (time: { hours: number; minutes: number; seconds: number }): string =>
     `${time.hours}:${time.minutes.toString().padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`;
+
+  React.useEffect(() => {
+    handlePredictAll();
+  }, [halfMarathonTime, fiveKTime, tenKTime, useHalfMarathon, useFiveK, useTenK]);
 
   const handlePredictAll = () => {
     setPredictedTimes(
@@ -33,25 +38,40 @@ export const RacePrediction = () => {
     ));
 
   const handleSetHalfMarathonTime = (field: keyof typeof halfMarathonTime, value: number) => {
-    setHalfMarathonTime((prev) => ({ ...prev, [field]: value }));
-    if (field === 'hours' && value > 0 || field === 'minutes' && value > 0 || field === 'seconds' && value > 0) {
-      setUseHalfMarathon(true);
-    }
-  }
+    setHalfMarathonTime((prev) => {
+      const updated = { ...prev, [field]: value };
+      if (Object.values(updated).some((v) => v > 0)) setUseHalfMarathon(true);
+      return updated;
+    });
+  };
 
-  const handleSetFiveKTime = (field: keyof typeof fiveKTime, value: number) => {
-    setFiveKTime((prev) => ({ ...prev, [field]: value }));
-    if (field === 'hours' && value > 0 || field === 'minutes' && value > 0 || field === 'seconds' && value > 0) {
-      setUseFiveK(true);
-    }
-  }
+  const handleSetUseHalfMarathon = (checked: boolean) => {
+    setUseHalfMarathon(checked);
+  };
 
-  const handleSetTenKTime = (field: keyof typeof tenKTime, value: number) => {
-    setTenKTime((prev) => ({ ...prev, [field]: value }));
-    if (field === 'hours' && value > 0 || field === 'minutes' && value > 0 || field === 'seconds' && value > 0) {
-      setUseTenK(true);
-    }
-  }
+  const handleSetTenKTime = (field: keyof typeof halfMarathonTime, value: number) => {
+    setTenKTime((prev) => {
+      const updated = { ...prev, [field]: value };
+      if (Object.values(updated).some((v) => v > 0)) setUseTenK(true);
+      return updated;
+    });
+  };
+
+  const handleSetUseTenK = (checked: boolean) => {
+    setUseTenK(checked);
+  };
+
+  const handleSetFiveKTime = (field: keyof typeof halfMarathonTime, value: number) => {
+    setFiveKTime((prev) => {
+      const updated = { ...prev, [field]: value };
+      if (Object.values(updated).some((v) => v > 0)) setUseFiveK(true);
+      return updated;
+    });
+  };
+
+  const handleSetUseFiveK = (checked: boolean) => {
+    setUseFiveK(checked);
+  };
 
   return (
     <Box>
@@ -62,9 +82,8 @@ export const RacePrediction = () => {
         Use your race times to predict your marathon time. If you select multiple races, an average will be calculated based on the selected times.
       </Typography>
       <br />
-      <Grid container spacing={4}>
         <Grid>
-        <Stack spacing={5} paddingBottom={3}>
+        <Stack paddingBottom={3}>
           {/* Half Marathon Time */}
           <Stack>
             <Typography>Half Marathon Time</Typography>
@@ -104,7 +123,7 @@ export const RacePrediction = () => {
               control={
                 <Checkbox
                   checked={useHalfMarathon}
-                  onChange={(e) => setUseHalfMarathon(e.target.checked)}
+                  onChange={(e) => handleSetUseHalfMarathon(e.target.checked)}
                 />
               }
               label="Use Half Marathon"
@@ -119,7 +138,7 @@ export const RacePrediction = () => {
                 <Select
                   fullWidth
                   value={tenKTime.hours}
-                  onChange={(e) => handleSetFiveKTime("hours", Number(e.target.value))}
+                  onChange={(e) => handleSetTenKTime("hours", Number(e.target.value))}
                 >
                   {generateOptions(2)}
                 </Select>
@@ -129,7 +148,7 @@ export const RacePrediction = () => {
                 <Select
                   fullWidth
                   value={tenKTime.minutes}
-                  onChange={(e) => handleSetFiveKTime("minutes", Number(e.target.value))}
+                  onChange={(e) => handleSetTenKTime("minutes", Number(e.target.value))}
                 >
                   {generateOptions(59)}
                 </Select>
@@ -139,7 +158,7 @@ export const RacePrediction = () => {
                 <Select
                   fullWidth
                   value={tenKTime.seconds}
-                  onChange={(e) => handleSetFiveKTime("seconds", Number(e.target.value))}
+                  onChange={(e) => handleSetTenKTime("seconds", Number(e.target.value))}
                 >
                   {generateOptions(59)}
                 </Select>
@@ -150,7 +169,7 @@ export const RacePrediction = () => {
               control={
                 <Checkbox
                   checked={useTenK}
-                  onChange={(e) => setUseTenK(e.target.checked)}
+                  onChange={(e) => handleSetUseTenK(e.target.checked)}
                 />
               }
               label="Use 10K"
@@ -196,14 +215,14 @@ export const RacePrediction = () => {
               control={
                 <Checkbox
                   checked={useFiveK}
-                  onChange={(e) => setUseFiveK(e.target.checked)}
+                  onChange={(e) => handleSetUseFiveK(e.target.checked)}
                 />
               }
               label="Use 5K"
             />
           </Stack>
 
-          {/* Predict Button */}
+          {/* Predict Button
           <Stack>
             <Button
               variant="contained"
@@ -212,10 +231,8 @@ export const RacePrediction = () => {
             >
               Predict Race Times
             </Button>
-          </Stack>
+          </Stack> */}
         </Stack>
-        </Grid>
-        <Grid>
           {/* Predicted Race Times */}
           {/* {predictedTimes && ( */}
             <Stack style={{ textAlign: "justify" }}>
@@ -233,7 +250,6 @@ export const RacePrediction = () => {
               </Typography>
             </Stack>
           {/* )} */}
-        </Grid>
       </Grid>
     </Box>
   );
