@@ -79,7 +79,7 @@ export const RacePrediction = () => {
         Race Time Prediction
       </Typography>
       <Typography>
-        Use your race times to predict your marathon time. If you select multiple races, an average will be calculated based on the selected times.
+        Use your race times to predict your marathon time. If you select multiple races, an average will be calculated.
       </Typography>
       <br />
         <Grid>
